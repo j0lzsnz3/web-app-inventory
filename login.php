@@ -47,7 +47,7 @@ if (!empty($_SESSION['user_id'])) {
 					</span>
 
 					<span class="txt1 p-b-11">
-						Username
+						Email
 					</span>
 					<div class="wrap-input100 validate-input m-b-36" data-validate="Email is required">
 						<input class="input100" type="text" id="email" name="email" inputmode="email">
@@ -72,9 +72,6 @@ if (!empty($_SESSION['user_id'])) {
 			</div>
 		</div>
 	</div>
-
-
-	<div id="dropDownSelect1"></div>
 
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
