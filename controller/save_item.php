@@ -4,22 +4,22 @@ $itemId = $_POST['item_id'];
 $itemName = $_POST['item_name'];
 $itemPrice = $_POST['item_price'];
 $itemStock = $_POST['item_stock'];
+$categoryId = $_POST['selected_category'];
 
-// $itemId > 0 adalah add event
-// $event == 0 adalah delete event
 if (isExist($itemId)) {
-    updateItem($itemId, $itemName, $itemPrice, $itemStock);
+    updateItem($itemId, $itemName, $itemPrice, $itemStock, $categoryId);
 } else {
-    addItem($itemId, $itemName, $itemPrice, $itemStock);
+    addItem($itemName, $itemPrice, $itemStock, $categoryId);
 }
 header("Refresh:0; url=../home.php");
 
-function addItem($itemId, $itemName, $itemPrice, $itemStock)
+function addItem($itemName, $itemPrice, $itemStock, $categoryId)
 {
     try {
-        $statement = getDbConnection()->prepare("INSERT INTO tbl_item (name, category_id, price, in_stock) VALUES (:itemName, 0, :itemPrice, :inStock)");
+        $statement = getDbConnection()->prepare("INSERT INTO tbl_item (name, category_id, price, in_stock) VALUES (:itemName, :categoryId, :itemPrice, :inStock)");
         $statement->execute([
             'itemName' => $itemName,
+            'categoryId' => $categoryId,
             'itemPrice' => $itemPrice,
             'inStock' => $itemStock
         ]);
@@ -29,12 +29,13 @@ function addItem($itemId, $itemName, $itemPrice, $itemStock)
     }
 }
 
-function updateItem($itemId, $itemName, $itemPrice, $itemStock) {
+function updateItem($itemId, $itemName, $itemPrice, $itemStock, $categoryId) {
     try {
-        $statement = getDbConnection()->prepare("UPDATE tbl_item SET name = :itemName, category_id = 0, price = :itemPrice, in_stock = :inStock WHERE id = :itemId");
+        $statement = getDbConnection()->prepare("UPDATE tbl_item SET name = :itemName, category_id = :categoryId, price = :itemPrice, in_stock = :inStock WHERE id = :itemId");
         $statement->execute([
             'itemId' => $itemId,
             'itemName' => $itemName,
+            'categoryId' => $categoryId,
             'itemPrice' => $itemPrice,
             'inStock' => $itemStock
         ]);

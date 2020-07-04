@@ -3,12 +3,10 @@ require_once('../util/config.php');
 $categoryId = $_POST['category_id'];
 $categoryName = $_POST['category_name'];
 
-// $categoryId > 0 adalah add event
-// $event == 0 adalah delete event
 if (isExist($categoryId)) {
-    updatecategory($categoryId, $categoryName, $categoryPrice, $categoryStock);
+    updatecategory($categoryId, $categoryName);
 } else {
-    addcategory($categoryId, $categoryName, $categoryPrice, $categoryStock);
+    addcategory($categoryName);
 }
 header("Refresh:0; url=../home.php");
 

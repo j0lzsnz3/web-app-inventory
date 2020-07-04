@@ -38,9 +38,9 @@ if (empty($_SESSION['user_id'])) {
             <h2>Item Library</h2><br>
             <div class="row">
                 <div class="input-group col-md-3">
-                    <input class="form-control py-2" type="search" value="Nama item" id="example-search-input">
+                    <input class="form-control py-2" type="search" onkeyup="searchItem()" placeholder="Masukkan nama item" id="search-input">
                     <span class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button">
+                        <button class="btn btn-outline-primary" type="button" onclick="searchItem()">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
@@ -65,23 +65,25 @@ if (empty($_SESSION['user_id'])) {
                     $queryAllItems = getDbConnection()->query("SELECT * FROM tbl_item");
                     $no = 0;
 
-                    // TODO: add logic to handle if there is no data here
-
-                    while ($row = $queryAllItems->fetch()) {
-                        $no++;
-                        $queryCategory = getDbConnection()->prepare("SELECT name FROM tbl_category WHERE id = :category_id");
-                        $queryCategory->execute([
-                            'category_id' => $row['category_id']
-                        ]);
-                        $categoryName = $queryCategory->fetchColumn();
-                        echo "<tr>
-                                <td>" . $no . "</td>
-                                <td>" . $row['id'] . "</td>
-                                <td>" . $row['name'] . "</td>
-                                <td>" . $categoryName . "</td>
-                                <td>" . $row['price'] . "</td>
-                                <td>" . $row['in_stock'] . "</td>
-                            </tr>";
+                    if (!empty($queryAllItems)) {
+                        while ($row  = $queryAllItems->fetch()) {
+                            $no++;
+                            $queryCategory = getDbConnection()->prepare("SELECT name FROM tbl_category WHERE id = :category_id");
+                            $queryCategory->execute([
+                                'category_id' => $row['category_id']
+                            ]);
+                            $categoryName = $queryCategory->fetchColumn();
+                            echo "<tr>
+                                    <td>" . $no . "</td>
+                                    <td>" . $row['id'] . "</td>
+                                    <td>" . $row['name'] . "</td>
+                                    <td>" . $categoryName . "</td>
+                                    <td>" . $row['price'] . "</td>
+                                    <td>" . $row['in_stock'] . "</td>
+                                </tr>";
+                        }
+                    } else {
+                        echo "Data kosong";
                     }
                     ?>
                 </tbody>
@@ -105,20 +107,16 @@ if (empty($_SESSION['user_id'])) {
                                     <input type="text" class="form-control" id="item-name" name="item_name">
                                     <label class="col-form-label">Kategori</label>
                                     <div class="dropdown show" id="dropdown-category">
-                                        <a class="btn btn-primary dropdown-toggle" id="selected-category" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Pilih Kategori
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <select class="custom-select" id="combo-category" name="selected_category">
                                             <?php
                                             require_once('./util/config.php');
                                             $queryCategories = getDbConnection()->query("SELECT * FROM tbl_category");
                                             $data = $queryCategories->fetchAll();
                                             foreach ($data as $row) :
                                             ?>
-                                                <a class="dropdown-item" value="<?= $row["name"] ?>"><?= $row["name"] ?></a>
+                                                <option value="<?= $row["id"] ?>"><?= $row["name"] ?></option>
                                             <?php endforeach ?>
-                                        </div>
+                                        </select>
                                     </div>
                                     <label for="message-text" class="col-form-label">Harga</label>
                                     <input type="number" min="1" step="any" class="form-control" id="item-price" name="item_price">
@@ -159,6 +157,7 @@ if (empty($_SESSION['user_id'])) {
             modal.find('.modal-body #item-name').val('')
             modal.find('.modal-body #item-price').val('')
             modal.find('.modal-body #item-stock').val('')
+            
 
             buttonDelete.style.display = "none"
             inputId.style.display = "none"
@@ -184,6 +183,7 @@ if (empty($_SESSION['user_id'])) {
                             modal.find('.modal-body #item-name').val(name)
                             modal.find('.modal-body #item-price').val(price)
                             modal.find('.modal-body #item-stock').val(stock)
+                            
 
                             buttonDelete.style.display = "block"
                             inputId.style.display = "block"
@@ -197,14 +197,24 @@ if (empty($_SESSION['user_id'])) {
         }
         window.onload = addRowHandlers()
 
-        $('#dropdown-category').change(function() {
-            // if ($(this).val() == "New") {
-            //     $("#new_value").show();
-            // } else {
-            //     $("#new_value").hide();
-            // }
-            alert($(this).val())
-        });
+        function searchItem() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-input")
+            filter = input.value.toUpperCase()
+            table = document.getElementById("table-item")
+            tr = table.getElementsByTagName("tr")
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2]
+                if (td) {
+                    txtValue = td.textContent || td.innerText
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""
+                    } else {
+                        tr[i].style.display = "none"
+                    }
+                }
+            }
+        }
     </script>
 </body>
 

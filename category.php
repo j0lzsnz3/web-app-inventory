@@ -38,9 +38,9 @@ if (empty($_SESSION['user_id'])) {
             <h2>Kategori</h2><br>
             <div class="row">
                 <div class="input-group col-md-3">
-                    <input class="form-control py-2" type="search" value="Nama kategori" id="example-search-input">
+                    <input class="form-control py-2" type="search" onkeyup="searchCategory()" placeholder="Masukkan nama kategori" id="search-input">
                     <span class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button">
+                        <button class="btn btn-outline-primary" type="button" onclick="searchCategory()">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
@@ -158,14 +158,24 @@ if (empty($_SESSION['user_id'])) {
         }
         window.onload = addRowHandlers()
 
-        $('#dropdown-category').change(function() {
-            // if ($(this).val() == "New") {
-            //     $("#new_value").show();
-            // } else {
-            //     $("#new_value").hide();
-            // }
-            alert($(this).val())
-        });
+        function searchCategory() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-input")
+            filter = input.value.toUpperCase()
+            table = document.getElementById("table-category")
+            tr = table.getElementsByTagName("tr")
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2]
+                if (td) {
+                    txtValue = td.textContent || td.innerText
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""
+                    } else {
+                        tr[i].style.display = "none"
+                    }
+                }
+            }
+        }
     </script>
 </body>
 
