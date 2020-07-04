@@ -16,7 +16,7 @@ try {
                 header("Location: ../login.html");
             }
         } else {
-            header("Location: ../login.html");
+            header("Location: ../login.php");
         }
     }
 } catch (Exception $exception) {

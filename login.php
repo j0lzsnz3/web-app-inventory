@@ -9,7 +9,7 @@ if (!empty($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
-	<title>Backoffice</title>
+	<title>Backoffice Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -41,9 +41,9 @@ if (!empty($_SESSION['user_id'])) {
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-				<form action="./controller/logincontroller.php" method="POST" name="input" class="login100-form validate-form flex-sb flex-w">
+				<form action="./controller/login.php" method="POST" name="input" class="login100-form validate-form flex-sb flex-w">
 					<span class="login100-form-title p-b-32">
-						Account Login
+						Backoffice Inventory
 					</span>
 
 					<span class="txt1 p-b-11">

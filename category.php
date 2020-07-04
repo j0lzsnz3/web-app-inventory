@@ -35,52 +35,41 @@ if (empty($_SESSION['user_id'])) {
         <!-- Page Content  -->
         <div id="content">
 
-            <h2>Item Library</h2><br>
+            <h2>Kategori</h2><br>
             <div class="row">
                 <div class="input-group col-md-3">
-                    <input class="form-control py-2" type="search" value="Nama item" id="example-search-input">
+                    <input class="form-control py-2" type="search" value="Nama kategori" id="example-search-input">
                     <span class="input-group-append">
                         <button class="btn btn-outline-primary" type="button">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
                 </div>
-                <button class="btn btn-primary" data-toggle="modal" id="btn-add">Tambah Item</button>
+                <button class="btn btn-primary" data-toggle="modal" id="btn-add">Tambah Kategori</button>
             </div><br>
-            <table class="table table-hover" id="table-item">
+            <table class="table table-hover" id="table-category">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">ID</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Kategori</th>
-                        <th scope="col">Harga</th>
-                        <th scope="col">Stok</th>
+                        <th scope="col">Nama Kategori</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     require_once('./util/config.php');
 
-                    $queryAllItems = getDbConnection()->query("SELECT * FROM tbl_item");
+                    $queryAllCategories = getDbConnection()->query("SELECT * FROM tbl_category");
                     $no = 0;
 
                     // TODO: add logic to handle if there is no data here
 
-                    while ($row = $queryAllItems->fetch()) {
+                    while ($row = $queryAllCategories->fetch()) {
                         $no++;
-                        $queryCategory = getDbConnection()->prepare("SELECT name FROM tbl_category WHERE id = :category_id");
-                        $queryCategory->execute([
-                            'category_id' => $row['category_id']
-                        ]);
-                        $categoryName = $queryCategory->fetchColumn();
                         echo "<tr>
                                 <td>" . $no . "</td>
                                 <td>" . $row['id'] . "</td>
                                 <td>" . $row['name'] . "</td>
-                                <td>" . $categoryName . "</td>
-                                <td>" . $row['price'] . "</td>
-                                <td>" . $row['in_stock'] . "</td>
                             </tr>";
                     }
                     ?>
@@ -91,45 +80,24 @@ if (empty($_SESSION['user_id'])) {
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ubah Item</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Ubah Kategori</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="./controller/save_item.php" method="POST" name="input">
+                            <form action="./controller/save_category.php" method="POST" name="input">
                                 <div class="form-group">
-                                    <label for="item-id" class="col-form-label" id="item-id-label">ID</label>
-                                    <input type="text" class="form-control" id="item-id" name="item_id">
-                                    <label for="recipient-name" class="col-form-label">Nama Item</label>
-                                    <input type="text" class="form-control" id="item-name" name="item_name">
-                                    <label class="col-form-label">Kategori</label>
-                                    <div class="dropdown show" id="dropdown-category">
-                                        <a class="btn btn-primary dropdown-toggle" id="selected-category" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Pilih Kategori
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <?php
-                                            require_once('./util/config.php');
-                                            $queryCategories = getDbConnection()->query("SELECT * FROM tbl_category");
-                                            $data = $queryCategories->fetchAll();
-                                            foreach ($data as $row) :
-                                            ?>
-                                                <a class="dropdown-item" value="<?= $row["name"] ?>"><?= $row["name"] ?></a>
-                                            <?php endforeach ?>
-                                        </div>
-                                    </div>
-                                    <label for="message-text" class="col-form-label">Harga</label>
-                                    <input type="number" min="1" step="any" class="form-control" id="item-price" name="item_price">
-                                    <label for="message-text" class="col-form-label">Stok</label>
-                                    <input type="number" min="1" step="any" class="form-control" id="item-stock" name="item_stock">
+                                    <label for="category-id" class="col-form-label" id="category-id-label">ID</label>
+                                    <input type="text" class="form-control" id="category-id" name="category_id">
+                                    <label for="recipient-name" class="col-form-label">Nama Kategori</label>
+                                    <input type="text" class="form-control" id="category-name" name="category_name">
                                 </div>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary" formaction="./controller/save_item.php">Simpan</button>
-                                    <button type="submit" id="btn-delete" formaction="./controller/delete_item.php" class="btn btn-danger">Hapus</button>
+                                    <button type="submit" class="btn btn-primary" formaction="./controller/save_category.php">Simpan</button>
+                                    <button type="submit" id="btn-delete" formaction="./controller/delete_category.php" class="btn btn-danger">Hapus</button>
                                 </div>
                             </form>
                         </div>
@@ -147,18 +115,16 @@ if (empty($_SESSION['user_id'])) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        var inputId = document.getElementById("item-id")
-        var inputIdLabel = document.getElementById("item-id-label")
+        var inputId = document.getElementById("category-id")
+        var inputIdLabel = document.getElementById("category-id-label")
         var buttonDelete = document.getElementById("btn-delete")
         var buttonAdd = document.getElementById("btn-add")
 
         buttonAdd.onclick = function() {
             var modal = $('#exampleModal').modal('show')
-            modal.find('.modal-title').text('Tambah Item')
-            modal.find('.modal-body #item-id').val('')
-            modal.find('.modal-body #item-name').val('')
-            modal.find('.modal-body #item-price').val('')
-            modal.find('.modal-body #item-stock').val('')
+            modal.find('.modal-title').text('Tambah Kategori')
+            modal.find('.modal-body #category-id').val('')
+            modal.find('.modal-body #category-name').val('')
 
             buttonDelete.style.display = "none"
             inputId.style.display = "none"
@@ -166,7 +132,7 @@ if (empty($_SESSION['user_id'])) {
         }
 
         function addRowHandlers() {
-            var table = document.getElementById("table-item")
+            var table = document.getElementById("table-category")
             var rows = table.getElementsByTagName("tr")
             for (i = 0; i < rows.length; i++) {
                 var currentRow = table.rows[i]
@@ -175,15 +141,10 @@ if (empty($_SESSION['user_id'])) {
                         return function() {
                             var id = row.getElementsByTagName("td")[1].innerHTML
                             var name = row.getElementsByTagName("td")[2].innerHTML
-                            var categoryName = row.getElementsByTagName("td")[3].innerHTML
-                            var price = row.getElementsByTagName("td")[4].innerHTML
-                            var stock = row.getElementsByTagName("td")[5].innerHTML
                             var modal = $('#exampleModal').modal('show')
-                            modal.find('.modal-title').text('Ubah Item')
-                            modal.find('.modal-body #item-id').val(id)
-                            modal.find('.modal-body #item-name').val(name)
-                            modal.find('.modal-body #item-price').val(price)
-                            modal.find('.modal-body #item-stock').val(stock)
+                            modal.find('.modal-title').text('Ubah Kategori')
+                            modal.find('.modal-body #category-id').val(id)
+                            modal.find('.modal-body #category-name').val(name)
 
                             buttonDelete.style.display = "block"
                             inputId.style.display = "block"

@@ -52,28 +52,15 @@ if (empty($_SESSION['user_id'])) {
                             <a href="library.php" target="targetFrame">Item Library</a>
                         </li>
                         <li>
-                            <a href="#">Categories</a>
+                            <a href="category.php" target="targetFrame">Categories</a>
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a>About</a>
-                </li>
-                <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                </li>
-                <li>
-                    <a href="#">Portfolio</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-
                 <li class="active">
                     <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Setting</a>
                     <ul class="collapse list-unstyled" id="settingSubmenu">
                         <li>
-                            <a href="#">Logout</a>
+                            <a href="./controller/logout.php">Logout</a>
                         </li>
                     </ul>
                 </li>
