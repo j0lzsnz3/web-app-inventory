@@ -53,6 +53,7 @@ if (empty($_SESSION['user_id'])) {
                         <th scope="col">No</th>
                         <th scope="col">ID</th>
                         <th scope="col">Nama Kategori</th>
+                        <th scope="col">Item</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,14 +63,19 @@ if (empty($_SESSION['user_id'])) {
                     $queryAllCategories = getDbConnection()->query("SELECT * FROM tbl_category");
                     $no = 0;
 
-                    // TODO: add logic to handle if there is no data here
-
                     while ($row = $queryAllCategories->fetch()) {
+                        $queryCountTotalItems = getDbConnection()->prepare("SELECT COUNT(id) FROM tbl_item WHERE category_id = :categoryId");
+                        $queryCountTotalItems->execute([
+                            'categoryId' => $row['id']
+                        ]);
+                        $totalUsedByItem = $queryCountTotalItems->fetchColumn();
+
                         $no++;
                         echo "<tr>
                                 <td>" . $no . "</td>
                                 <td>" . $row['id'] . "</td>
                                 <td>" . $row['name'] . "</td>
+                                <td>" . $totalUsedByItem . "</td>
                             </tr>";
                     }
                     ?>

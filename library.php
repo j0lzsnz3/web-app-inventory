@@ -156,10 +156,8 @@ if (empty($_SESSION['user_id'])) {
             modal.find('.modal-title').text('Tambah Item')
             modal.find('.modal-body #item-id').val('')
             modal.find('.modal-body #item-name').val('')
-            modal.find('.modal-body #item-price').val('')
-            modal.find('.modal-body #item-stock').val('')
-
-
+            modal.find('.modal-body #item-price').val(0)
+            modal.find('.modal-body #item-stock').val(0)
 
             buttonDelete.style.display = "none"
             inputId.style.display = "none"
@@ -216,12 +214,6 @@ if (empty($_SESSION['user_id'])) {
                     }
                 }
             }
-        }
-
-        function setSelectedCategory(categoryId, categoryName) {
-            let element = document.getElementById("#combo-category");
-            element.value = categoryId
-            element.innerHTML = categoryName
         }
     </script>
 </body>
