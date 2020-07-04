@@ -11,9 +11,9 @@ try {
         if ($validateEmail > 0) {
             if (password_verify($password, findPasswordByEmail($email))) {
                 $_SESSION['user_id'] = $email;
-                header("Location: ../home.html");
+                header("Location: ../home.php");
             } else {
-                header("Location: ../login.html");
+                header("Location: ../login.php");
             }
         } else {
             header("Location: ../login.php");

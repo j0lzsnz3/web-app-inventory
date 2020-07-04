@@ -10,7 +10,7 @@ if (isExist($categoryId)) {
 } else {
     addcategory($categoryId, $categoryName, $categoryPrice, $categoryStock);
 }
-// header("Refresh:0; url=../home.php");
+header("Refresh:0; url=../home.php");
 
 function addcategory($categoryName) {
     try {
