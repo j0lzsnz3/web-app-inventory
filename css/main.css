@@ -58,7 +58,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #57b846;
+  color: #7386D5;
 }
 
 /*---------------------------------------------*/
@@ -224,6 +224,7 @@ iframe {
   background-color: #fff;
   border: 1px solid #e6e6e6;
   border-radius: 2px;
+  outline-color: #6d7fcc;
 }
 
 
@@ -253,6 +254,7 @@ iframe {
   pointer-events: none;
   border: 1px solid #6d7fcc;
   border-radius: 3px;
+  outline-color: #6d7fcc;
 
   visibility: hidden;
   opacity: 0;
@@ -272,6 +274,7 @@ iframe {
 .input100:focus + .focus-input100 {
   visibility: visible;
   opacity: 1;
+  outline-color: #6d7fcc;
 
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
@@ -370,7 +373,7 @@ iframe {
 }
 
 .input-checkbox100:checked + .label-checkbox100::before {
-  color: #57b846;
+  color: #7386D5;
 }
 
 
