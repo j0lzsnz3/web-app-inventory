@@ -89,11 +89,11 @@ if (empty($_SESSION['user_id'])) {
                 </tbody>
             </table>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ubah Item</h5>
+                            <h5 class="modal-title" id="itemModalLabel">Ubah Item</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -149,15 +149,17 @@ if (empty($_SESSION['user_id'])) {
         var inputIdLabel = document.getElementById("item-id-label")
         var buttonDelete = document.getElementById("btn-delete")
         var buttonAdd = document.getElementById("btn-add")
+        var comboCategory = document.getElementById("combo-category")
 
         buttonAdd.onclick = function() {
-            var modal = $('#exampleModal').modal('show')
+            var modal = $('#itemModal').modal('show')
             modal.find('.modal-title').text('Tambah Item')
             modal.find('.modal-body #item-id').val('')
             modal.find('.modal-body #item-name').val('')
             modal.find('.modal-body #item-price').val('')
             modal.find('.modal-body #item-stock').val('')
-            
+
+
 
             buttonDelete.style.display = "none"
             inputId.style.display = "none"
@@ -177,16 +179,16 @@ if (empty($_SESSION['user_id'])) {
                             var categoryName = row.getElementsByTagName("td")[3].innerHTML
                             var price = row.getElementsByTagName("td")[4].innerHTML
                             var stock = row.getElementsByTagName("td")[5].innerHTML
-                            var modal = $('#exampleModal').modal('show')
+                            var modal = $('#itemModal').modal('show')
                             modal.find('.modal-title').text('Ubah Item')
                             modal.find('.modal-body #item-id').val(id)
                             modal.find('.modal-body #item-name').val(name)
                             modal.find('.modal-body #item-price').val(price)
                             modal.find('.modal-body #item-stock').val(stock)
-                            
 
                             buttonDelete.style.display = "block"
                             inputId.style.display = "block"
+                            inputId.readOnly = true
                             inputIdLabel.style.display = "block"
                             dropdownCategory.innerText = categoryName
                         };
@@ -214,6 +216,12 @@ if (empty($_SESSION['user_id'])) {
                     }
                 }
             }
+        }
+
+        function setSelectedCategory(categoryId, categoryName) {
+            let element = document.getElementById("#combo-category");
+            element.value = categoryId
+            element.innerHTML = categoryName
         }
     </script>
 </body>

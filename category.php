@@ -148,6 +148,7 @@ if (empty($_SESSION['user_id'])) {
 
                             buttonDelete.style.display = "block"
                             inputId.style.display = "block"
+                            inputId.readOnly = true
                             inputIdLabel.style.display = "block"
                             dropdownCategory.innerText = categoryName
                         };
